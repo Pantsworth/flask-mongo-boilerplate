@@ -24,7 +24,6 @@ def threshold_form():
     # database status
     root = flask_rest_service.resources.Root()
     root_test = flask_rest_service.resources.Root.get(root)
-
     return render_template('form.html', db_status=root_test, html_threshold=threshold, html_data=threshold)
 
 
