@@ -13,7 +13,7 @@
 <p></p>
 <p id="set-threshold">(Type any number to set latitude threshold, 'Reset' to reset database, 'Add' to add record, 'All' to show all records)</p>
 <form id="myform" action="/threshold" method="post">
-    <input id="threshold" autofocus type="text" class="validate" name="threshold">
+    <input id="threshold" autofocus  autocomplete="off" type="text" class="validate" name="threshold">
     <input type='hidden' name='lat' id="lat" value='lat-unset' />
     <input type='hidden' name='long' id="long" value='long-unset' />
     <input type='hidden' name='form-orientation' id="form-orientation" value='orientation-unset' />
@@ -57,8 +57,9 @@
 
           // Get the direction of the device (in degrees).
         var direction = event.alpha;
+
         document.getElementById("orientation").innerHTML = "Device Orientation: " + String(direction);
-        document.getElementById("form-orientation").innerHTML = String(direction);
+        document.getElementById('form-orientation').value = direction;
 
         });
     }
