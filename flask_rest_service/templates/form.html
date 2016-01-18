@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+  <title>mHealth</title>
+    <body>
+{{ html_helloworld }} IT'S ME
+<p id="location">Your location is: Loading...</p>
+<p id="orientation">Device Orientation: Loading...</p>
+<p id="json-test"></p>
+<p id="current-threshold">Current Threshold Is: {{ html_threshold }}</p>
+<p></p>
+<p id="set-threshold">(Type any number to set latitude threshold, 'Reset' to reset database, 'Add' to add record, 'All' to show all records)</p>
+<form id="myform" action="/threshold" method="post">
+    <input id="threshold" autofocus type="text" class="validate" name="threshold">
+    <input type='hidden' name='lat' id="lat" value='lat-unset' />
+    <input type='hidden' name='long' id="long" value='long-unset' />
+    <input type='hidden' name='form-orientation' id="form-orientation" value='orientation-unset' />
+</form>
+<p id="current-threshold">Records Matching Threshold: {{html_data}}</p>
+<p id="db-status">MongoDB Status: {{db_status}}</p>
+</body>
+    </head>
+
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+
+{#    $("button").click(function(){#}
+{#    $.get("http://127.0.0.1:5000/readings/", function(mongo, status){#}
+{#        console.log("reading: " + mongo + "\nStatus: " + status);#}
+{#    });#}
+{#    });#}
+
+    // Get the location.
+    navigator.geolocation.getCurrentPosition(function(position) {
+    // Get the positioning coordinates.
+    var lat = position.coords.latitude;
+    var long = position.coords.longitude;
+    document.getElementById("location").innerHTML = "Your location is: " + String(lat) + ", " + String(long);
+    document.getElementById('lat').value = lat;
+    document.getElementById('long').value = long;
+    });
+
+
+    var myform = document.getElementById('myform');
+      myform.onsubmit = function(){
+        var lat = position.coords.latitude;
+        var long = position.coords.longitude;
+          document.getElementById('lat').value = lat;
+          document.getElementById('long').value = long;
+          myform.submit();
+      };
+
+    if (window.DeviceOrientationEvent) {
+    // Create an event listener
+        window.addEventListener('deviceorientation', function(event) {
+          // Get the left-to-right tilt (in degrees).
+        var tiltLR = event.gamma;
+        // Get the front-to-back tilt (in degrees).
+        var titleFB = event.beta;
+
+          // Get the direction of the device (in degrees).
+        var direction = event.alpha;
+        document.getElementById("orientation").innerHTML = "Device Orientation: " + String(direction);
+        document.getElementById("form-orientation").innerHTML = String(direction);
+
+        });
+    }
+    else {
+        document.getElementById("orientation").innerHTML = "Device Orientation: Not Supported";
+    }
+
+</script>
